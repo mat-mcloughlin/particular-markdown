@@ -1,0 +1,36 @@
+﻿{{#if Related.RootSamples}}
+<h2><a name="related-samples" class="anchor" href="#related-samples"><span class="glyphicon glyphicon-link"></span></a>Samples</h2>
+<ul>
+    {{#Related.RootSamples}}
+    <li>
+        <a href="{{Url}}">{{Title}}</a><br />
+        {{{Summary}}}
+    </li>
+    {{/Related.RootSamples}}
+</ul>
+{{/if}}
+{{#if Related.RootArticles}}
+<h2><a name="related-articles" class="anchor" href="#related-articles"><span class="glyphicon glyphicon-link"></span></a>Related Articles</h2>
+<ul>
+    {{#Related.RootArticles}}
+    <li>
+        <a href="{{Url}}">{{Title}}</a><br />
+        {{{Summary}}}
+    </li>
+    {{/Related.RootArticles}}
+</ul>
+{{/if}}
+{{#Related.Directories}}
+<h2><a href="{{Url}}">{{Title}}</a></h2>
+{{{Summary}}}<br /><br />
+<div>
+    <ul>
+        {{#Pages}}
+        <li>
+            <a href="{{Url}}">{{Title}}</a><br />
+            {{{Summary}}}
+        </li>
+        {{/Pages}}
+    </ul>
+</div>
+{{/Related.Directories}}

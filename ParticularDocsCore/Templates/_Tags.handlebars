@@ -1,0 +1,7 @@
+﻿{{#HasTags}}	
+<div class="meta">
+    <span class="glyphicon glyphicon-tags tags">
+		{{#each Tags}}<a href="/tags/{{Key}}">{{Name}}</a>{{#unless @last}},{{/unless}} {{/each}}
+    </span>
+</div>
+{{/HasTags}}

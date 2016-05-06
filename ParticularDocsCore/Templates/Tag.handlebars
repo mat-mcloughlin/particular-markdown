@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    {{>Head}}
+    <meta name="robots" content="noindex" />
+</head>
+<body>
+    <div id="wrap">
+        <div class="container">
+            {{>Header}}
+            <div class="row">
+                {{>Crumbs}}
+                {{>Edit}}
+            </div>
+            <div class="row row-offcanvas row-offcanvas-right">
+                <div class="col-xs-12 col-sm-9 contentArea">
+                    {{>MenuButton}}
+                    <h1 class="mainTitle">Pages tagged with "{{Tag.Name}}"</h1>
+                    <ul>
+                        {{#Tag.Pages}}
+                        <li>
+                            <a href="{{Url}}">{{Title}}</a>
+                            <p>
+                                {{{Summary}}}
+                            </p>
+                        </li>
+                        {{/Tag.Pages}}
+                    </ul>
+                </div>
+                <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas">
+                    {{>Navigation}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{>Footer}}
+    {{>Foot}}
+</body>
+</html>

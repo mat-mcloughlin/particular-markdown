@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    {{>Head}}
+</head>
+<body>
+    <div id="wrap">
+        <div class="container">
+            {{>Header}}
+            <div class="row">
+                {{>Crumbs}}
+                {{>Edit}}
+            </div>
+            <div class="row row-offcanvas row-offcanvas-right">
+                <div class="col-xs-12 col-sm-9 contentArea">
+                    {{>MenuButton}}
+                    <h1 class="mainTitle">{{Title}}</h1>
+                    {{>Tags}}
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="{{{Name}}}.zip" class="btn btn-default">Download</a>
+                        <a href="{{{DirectoryUrl}}}" class="btn btn-default">Browse on GitHub</a>
+                    </div>
+                    <br />
+
+                    {{#if SolutionNugets}}
+                    <h2><a name="nugets" class="anchor" href="#nugets"><span class="glyphicon glyphicon-link"></span></a>NuGet packages</h2>
+                    <div class="panel-group">
+                        {{#each SolutionNugets}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" data-toggle="collapse" data-target="#Nuget-v{{HtmlLabel}}">
+                                <h5 class="panel-title">{{Label}} <small>{{Package}}</small></h5>
+                            </div>
+                            <div id="Nuget-v{{HtmlLabel}}" class="panel-collapse collapse {{#if IsSelected}}in{{/if}}">
+                                <ul style="padding:10px;padding-left:30px;margin-bottom:0px;">
+                                    {{#UsedNugets}}
+                                    <li>
+                                        <a href="https://www.nuget.org/packages/{{Id}}/">{{Id}}</a> (Version: <a href="https://www.nuget.org/packages/{{Id}}/{{Version}}">{{Version}}</a>)
+                                    </li>
+                                    {{/UsedNugets}}
+                                </ul>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                    {{>PreRelease}}
+                    {{{Content}}}
+                    {{>Related}}
+                    <div style="clear:both">
+                        {{>CommitDate}}
+                    </div>
+                </div>
+                <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas">
+                    {{>Navigation}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{>Footer}}
+    {{>Foot}}
+</body>
+</html>
