@@ -1,12 +1,14 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import Provider from './provider';
 let spawn = require('child_process').spawn;
+let lodash = require('lodash');
+
 
 export function activate(context: vscode.ExtensionContext) {
 
     let previewUri = vscode.Uri.parse('markdown://particularMarkdown');
-
 
     class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
         private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
@@ -28,61 +30,15 @@ export function activate(context: vscode.ExtensionContext) {
         }
     }
     
-     class Provider {
-         private _ipc : any;
-         private _promise : Promise<string>;
-         _resolver : any; 
-         private _response : string;
-        
-         constructor()
-         {
-             let processEnv = process.env.MARKDOWN_CONSOLE || "C:\\Git\\particularmarkdown\\ParticularDocsCore\\MarkdownConsole.exe";
-             this._ipc = spawn(processEnv);
-          
-             this._ipc.stdout.on('data', (data) => {
-                 console.log("Getting something back");
-                 
-                 this._response += data.toString();
-                                                
-                 if (this._response.endsWith('|||')) {
-                    this._resolver(this._response.replace('|||', ''));
-                    
-                 
-                    this._response = '';
-                    this._promise = new Promise<string>((resolve, reject) => {
-                        this._resolver = resolve;
-                    });
-                 }
-            }); 
-            
-            this._promise = new Promise<string>((resolve, reject) => {
-                this._resolver = resolve;
-            });
-         }
-        
-         public Process(text : string, filename : string): Promise<string> {
-             var message = { location: filename.toLowerCase(), markdown: text };
-           
-             this._ipc.stdin.write(JSON.stringify(message) + "\n");
-                      
-             return this._promise;
-         }
-     }
-
     let provider = new TextDocumentContentProvider();
+    
     let registration = vscode.workspace.registerTextDocumentContentProvider('markdown', provider);
 
-    vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
+    vscode.workspace.onDidChangeTextDocument( lodash.debounce((e: vscode.TextDocumentChangeEvent) => {
         if (e.document === vscode.window.activeTextEditor.document) {
             provider.update(previewUri);
         }
-    });
-
-    vscode.window.onDidChangeTextEditorSelection((e: vscode.TextEditorSelectionChangeEvent) => {
-        if (e.textEditor === vscode.window.activeTextEditor) {
-            provider.update(previewUri);
-        }
-    })
+    }), 1000);
 
     let disposable = vscode.commands.registerCommand('particularMarkdown.showMarkdown', () => {
         return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then((success) => {
